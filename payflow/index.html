@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PayFlow – Secure digital payments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1F7;--sf:#fff;--ink:#0F1B3D;--mu:#5B6585;--ln:#DDE2EF;--pr:#1F3FFF;--prt:#fff;--ok:#0B8F63;--okb:#DDF5EA;--wn:#A86400;--wnb:#FFF0D1;--er:#C42B3A;--erb:#FDE3E5;--hero:#0F1B3D;--herot:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1022;--sf:#121A33;--ink:#E8ECFA;--mu:#98A2C6;--ln:#222C4F;--pr:#6C84FF;--prt:#0A1022;--ok:#4FD6A1;--okb:#0F3A2D;--wn:#FFC15E;--wnb:#3D2C0A;--er:#FF7A86;--erb:#451520;--hero:#1B2A6B;}}
+:root[data-theme="dark"]{--bg:#0A1022;--sf:#121A33;--ink:#E8ECFA;--mu:#98A2C6;--ln:#222C4F;--pr:#6C84FF;--prt:#0A1022;--ok:#4FD6A1;--okb:#0F3A2D;--wn:#FFC15E;--wnb:#3D2C0A;--er:#FF7A86;--erb:#451520;--hero:#1B2A6B}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3,.num{font-family:Sora,"IBM Plex Sans",system-ui,sans-serif;margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
+.btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:10px 16px;font-weight:500}
+.btn.sec{background:transparent;color:var(--ink);border:1px solid var(--ln)}
+.btn.sm{padding:6px 10px;font-size:13px}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 4px}
+input,select{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
+.auth{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.brand{background:var(--hero);color:var(--herot);padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.brand h1{font-size:clamp(30px,4vw,48px);line-height:1.1;max-width:14ch}
+.brand p{max-width:42ch;opacity:.82}
+.chip{display:inline-flex;margin:0 6px 6px 0;padding:4px 10px;border:1px solid rgba(255,255,255,.3);border-radius:99px;font-size:13px}
+.formw{display:flex;align-items:center;justify-content:center;padding:32px}
+.form{width:100%;max-width:380px}
+.form h2{font-size:26px;margin-bottom:4px}
+.err{color:var(--er);font-size:13px;min-height:20px;margin-top:8px}
+.logo{font:700 20px Sora,sans-serif;display:flex;gap:8px;align-items:center}
+.logo i{width:22px;height:22px;border-radius:7px;background:var(--pr);display:inline-block;position:relative}
+.logo i::after{content:"";position:absolute;inset:6px 4px;border-top:2px solid var(--prt);border-bottom:2px solid var(--prt)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:var(--sf);border-bottom:1px solid var(--ln);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header.top .r{display:flex;gap:10px;align-items:center}
+nav.tabs{display:flex;gap:4px;padding:12px 24px 0;max-width:1000px;margin:0 auto;overflow-x:auto}
+nav.tabs button{background:none;border:0;padding:10px 14px;border-bottom:2px solid transparent;color:var(--mu);white-space:nowrap}
+nav.tabs button.on{color:var(--ink);border-color:var(--pr);font-weight:500}
+main{max-width:1000px;margin:0 auto;padding:20px 24px 60px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:20px}
+.c7{grid-column:span 7}.c5{grid-column:span 5}.c4{grid-column:span 4}.c12{grid-column:span 12}
+.bal{background:var(--hero);color:var(--herot);border:0}
+.bal .num{font-size:clamp(34px,6vw,52px);font-weight:700;letter-spacing:-.02em}
+.bal small{opacity:.75}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.bal .btn.sec{color:#fff;border-color:rgba(255,255,255,.35)}
+.bal .btn:not(.sec){background:#fff;color:#0F1B3D}
+.stat .num{font-size:22px;font-weight:700}.stat span{color:var(--mu);font-size:13px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:96px;margin-top:10px}
+.bars div{flex:1;background:var(--pr);border-radius:5px 5px 0 0;min-height:3px;opacity:.85}
+.bars+.lb{display:flex;gap:8px;color:var(--mu);font-size:12px}.lb span{flex:1;text-align:center}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-weight:500;color:var(--mu);font-size:13px}
+td,th{padding:10px 8px;border-bottom:1px solid var(--ln);vertical-align:top}
+.wrap{overflow-x:auto}
+.pill{padding:2px 9px;border-radius:99px;font-size:12px;font-weight:500;white-space:nowrap}
+.s-success{background:var(--okb);color:var(--ok)}.s-failed{background:var(--erb);color:var(--er)}
+.in{color:var(--ok)}.out{color:var(--ink)}
+.tools{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}.tools input{flex:1;min-width:160px}.tools select{width:auto}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--mu);word-break:break-all}
+.note{background:var(--wnb);color:var(--wn);border-radius:10px;padding:10px 12px;font-size:13px;margin-top:14px}
+.empty{padding:28px;text-align:center;color:var(--mu)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;z-index:9}
+#toast.show{opacity:1}
+.hide{display:none}
+@media(max-width:800px){.auth{grid-template-columns:1fr}.brand{padding:28px}.c7,.c5,.c4{grid-column:span 12}header.top,main,nav.tabs{padding-left:16px;padding-right:16px}}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="toast" role="status" aria-live="polite"></div>
+<script>
+const K='payflow_v1',TK='payflow_token';
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+const hash=s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h.toString(16)};
+const b64=s=>btoa(unescape(encodeURIComponent(s))).replace(/=/g,'');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const fmt=t=>new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+let db,mem=null,memU=null,S={tab:'overview',idem:uid(),last:null,filter:'all',q:'',mode:'login',err:''};
+function load(){try{const r=localStorage.getItem(K);if(r)return JSON.parse(r)}catch(e){}
+ return mem||{users:[{id:'u1',name:'Aarav Sharma',email:'aarav@demo.in',pw:hash('demo1234'),bal:25000},{id:'u2',name:'Meera Iyer',email:'meera@demo.in',pw:hash('demo1234'),bal:12000},{id:'u3',name:'Kabir Khan',email:'kabir@demo.in',pw:hash('demo1234'),bal:8000}],txns:[],audit:[],idem:{}}}
+function save(){mem=db;try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}}
+function audit(u,ev,meta){db.audit.unshift({id:uid(),u,ev,meta,ts:Date.now()});db.audit=db.audit.slice(0,200)}
+function issue(u){const p={sub:u.id,iat:Date.now(),exp:Date.now()+30*60000};return b64('{"alg":"HS256","typ":"JWT"}')+'.'+b64(JSON.stringify(p))+'.'+hash(JSON.stringify(p)+'secret')}
+function verify(t){try{const [,p,s]=t.split('.'),o=JSON.parse(decodeURIComponent(escape(atob(p))));if(o.exp<Date.now())return null;return db.users.find(u=>u.id===o.sub)||null}catch(e){return null}}
+function me(){let t=null;try{t=localStorage.getItem(TK)}catch(e){}return t?verify(t):memU}
+function setTok(u){try{u?localStorage.setItem(TK,issue(u)):localStorage.removeItem(TK)}catch(e){}memU=u||null}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>t.className='',3200)}
+
+/* ---- "API" layer: validation + atomic transactions + idempotency ---- */
+function tx(fn){const snap=JSON.stringify(db);try{const r=fn();save();return r}catch(e){db=JSON.parse(snap);audit(null,'tx.rollback',e.message);save();throw e}}
+function register(name,email,pw){email=email.trim().toLowerCase();
+ if(name.trim().length<2)throw Error('Enter your full name.');
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))throw Error('Enter a valid email address.');
+ if(pw.length<8)throw Error('Password must be at least 8 characters.');
+ if(db.users.some(u=>u.email===email))throw Error('An account with this email already exists.');
+ return tx(()=>{const u={id:uid(),name:name.trim(),email,pw:hash(pw),bal:5000};db.users.push(u);
+  db.txns.unshift({id:uid(),type:'bonus',to:u.id,amt:5000,note:'Welcome bonus',status:'success',ts:Date.now()});
+  audit(u.id,'user.register',email);return u})}
+function login(email,pw){const u=db.users.find(x=>x.email===email.trim().toLowerCase());
+ if(!u||u.pw!==hash(pw)){audit(u?.id||null,'auth.failed',email);save();throw Error('Email or password is incorrect.')}
+ audit(u.id,'auth.login','JWT issued, 30 min expiry');save();return u}
+function topup(u,amt){amt=Math.floor(+amt);if(!(amt>=100&&amt<=50000))throw Error('Add between ₹100 and ₹50,000.');
+ return tx(()=>{const x=db.users.find(a=>a.id===u.id);x.bal+=amt;db.txns.unshift({id:uid(),type:'topup',to:x.id,amt,note:'Wallet top-up',status:'success',ts:Date.now()});audit(x.id,'wallet.topup',inr(amt))})}
+function transfer(u,toEmail,amt,note,key){
+ if(db.idem[key]){audit(u.id,'idempotent.replay','key '+key);save();return{dup:true,t:db.txns.find(t=>t.id===db.idem[key])}}
+ amt=Math.floor(+amt);toEmail=toEmail.trim().toLowerCase();
+ const fail=r=>{const t={id:uid(),type:'transfer',from:u.id,amt:amt||0,note,status:'failed',reason:r,ts:Date.now(),to:db.users.find(x=>x.email===toEmail)?.id};db.txns.unshift(t);audit(u.id,'transfer.failed',r);save();throw Error(r)};
+ const to=db.users.find(x=>x.email===toEmail),from=db.users.find(x=>x.id===u.id);
+ if(!to)fail('Recipient not found. Try meera@demo.in or kabir@demo.in.');
+ if(to.id===from.id)fail('You can’t send money to yourself.');
+ if(!(amt>=1&&amt<=100000))fail('Enter an amount between ₹1 and ₹1,00,000.');
+ if(from.bal<amt)fail('Insufficient balance. Add money and try again.');
+ const t=tx(()=>{from.bal-=amt;to.bal+=amt;const t={id:uid(),type:'transfer',from:from.id,to:to.id,amt,note,status:'success',ts:Date.now(),key};
+  db.txns.unshift(t);db.idem[key]=t.id;audit(from.id,'transfer.success',inr(amt)+' → '+to.email+' (key '+key+')');return t});
+ return{dup:false,t}}
+
+/* ---- Views ---- */
+const $=id=>document.getElementById(id);
+function render(){db=db||load();const u=me();$('app').innerHTML=u?appView(u):authView();if(u&&S.tab==='history')hist(u)}
+function authView(){const s=S.mode==='signup';return`<div class="auth"><section class="brand"><div class="logo"><i></i>PayFlow</div><div><h1>Move money without second guesses.</h1><p>Send to anyone with a PayFlow wallet. Every payment is checked, recorded in an audit log, and protected from double charges.</p></div><div><span class="chip">JWT sessions</span><span class="chip">Atomic transfers</span><span class="chip">Duplicate-proof payments</span><span class="chip">Audit trail</span></div></section>
+<section class="formw"><form class="form" onsubmit="return authGo(event)"><h2>${s?'Create your account':'Welcome back'}</h2><p style="color:var(--mu);margin:0 0 8px">${s?'You get ₹5,000 to try payments.':'Log in to your wallet.'}</p>
+${s?'<label for="nm">Full name</label><input id="nm" autocomplete="name">':''}<label for="em">Email</label><input id="em" type="email" autocomplete="email" value="${s?'':'aarav@demo.in'}"><label for="pw">Password</label><input id="pw" type="password" autocomplete="${s?'new-password':'current-password'}" value="${s?'':'demo1234'}">
+<div class="err" role="alert">${esc(S.err)}</div><button class="btn" style="width:100%;margin-top:6px">${s?'Create account':'Log in'}</button>
+<p style="text-align:center;margin:16px 0 0"><button type="button" class="btn sec sm" onclick="S.mode='${s?'login':'signup'}';S.err='';render()">${s?'I already have an account':'Create a new account'}</button></p>
+${s?'':'<p class="mono" style="text-align:center;margin-top:16px">Demo login is pre-filled: aarav@demo.in / demo1234</p>'}</form></section></div>`}
+function authGo(e){e.preventDefault();try{const em=$('em').value,pw=$('pw').value;const u=S.mode==='signup'?register($('nm').value,em,pw):login(em,pw);setTok(u);S.err='';S.tab='overview';S.idem=uid()}catch(x){S.err=x.message}render();return false}
+function mine(u){return db.txns.filter(t=>t.from===u.id||t.to===u.id)}
+function dir(t,u){return t.to===u.id&&t.type!=='transfer'||t.to===u.id&&t.from!==u.id?'in':'out'}
+function name(id){return id?(db.users.find(x=>x.id===id)?.name||'Unknown'):'—'}
+function label(t,u){if(t.type==='bonus')return'Welcome bonus';if(t.type==='topup')return'Wallet top-up';return dir(t,u)==='in'?'From '+name(t.from):'To '+name(t.to)}
+function rows(list,u){return list.length?list.map(t=>{const d=dir(t,u);return`<tr><td>${esc(label(t,u))}<div class="mono" style="font-family:inherit">${esc(t.note||'')}${t.reason?esc(t.reason):''}</div></td><td>${fmt(t.ts)}</td><td><span class="pill s-${t.status}">${t.status==='success'?'Completed':'Failed'}</span></td><td style="text-align:right" class="${d==='in'&&t.status==='success'?'in':'out'}">${t.status==='failed'?'':d==='in'?'+':'−'}${inr(t.amt)}</td></tr>`}).join(''):''}
+function table(list,u){return list.length?`<div class="wrap"><table><thead><tr><th>Details</th><th>Date</th><th>Status</th><th style="text-align:right">Amount</th></tr></thead><tbody>${rows(list,u)}</tbody></table></div>`:'<div class="empty">No payments yet. Send money or add funds to get started.</div>'}
+function appView(u){const L=mine(u),ok=L.filter(t=>t.status==='success');let sent=0,rec=0;ok.forEach(t=>dir(t,u)==='in'?rec+=t.amt:sent+=t.amt);
+ const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-6+i);return d}),vals=days.map(d=>ok.filter(t=>dir(t,u)==='out'&&t.ts>=+d&&t.ts<+d+864e5).reduce((a,t)=>a+t.amt,0)),mx=Math.max(...vals,1);
+ const tabs=[['overview','Overview'],['send','Send money'],['history','History'],['audit','Audit log']];
+ let body='';
+ if(S.tab==='overview')body=`<div class="grid"><div class="card bal c7"><small>Wallet balance</small><div class="num">${inr(u.bal)}</div><div class="row"><button class="btn" onclick="S.tab='send';render()">Send money</button><button class="btn sec" onclick="addFunds()">Add money</button></div></div>
+<div class="card c5"><h3 style="font-size:16px">Spending, last 7 days</h3><div class="bars">${vals.map(v=>`<div title="${inr(v)}" style="height:${Math.max(3,v/mx*100)}%"></div>`).join('')}</div><div class="lb">${days.map(d=>`<span>${d.toLocaleDateString('en-IN',{weekday:'short'}).slice(0,2)}</span>`).join('')}</div></div>
+<div class="card stat c4"><span>Total sent</span><div class="num">${inr(sent)}</div></div><div class="card stat c4"><span>Total received</span><div class="num">${inr(rec)}</div></div><div class="card stat c4"><span>Payments</span><div class="num">${L.length}</div><span>${L.filter(t=>t.status==='failed').length} failed</span></div>
+<div class="card c12"><h3 style="font-size:16px;margin-bottom:8px">Recent activity</h3>${table(L.slice(0,5),u)}</div></div>`;
+ if(S.tab==='send'){const others=db.users.filter(x=>x.id!==u.id);body=`<div class="grid"><form class="card c7" onsubmit="return pay(event)"><h3>Send money</h3><label for="to">Recipient email</label><input id="to" type="email" list="ppl" placeholder="meera@demo.in" required><datalist id="ppl">${others.map(x=>`<option value="${esc(x.email)}">${esc(x.name)}</option>`).join('')}</datalist>
+<label for="am">Amount (₹)</label><input id="am" type="number" min="1" step="1" required><label for="nt">Note (optional)</label><input id="nt" maxlength="60"><div class="row"><button class="btn">Send payment</button></div>
+<div class="note">Request key <span class="mono" style="color:inherit">${S.idem}</span><br>Each form carries a unique key. If the same request is sent twice, only the first one moves money.</div></form>
+<div class="card c5"><h3 style="font-size:16px">Test duplicate protection</h3><p style="color:var(--mu)">Send a payment, then replay the exact same request to see it get blocked.</p>${S.last?`<p class="mono">Last request: ${inr(S.last.amt)} to ${esc(S.last.to)}<br>Key ${S.last.key}</p><button class="btn sec sm" onclick="replay()">Replay same request</button> <button class="btn sec sm" onclick="S.idem=uid();S.last=null;render()">Start a new payment</button>`:'<div class="empty">No request to replay yet.</div>'}</div></div>`}
+ if(S.tab==='history')body=`<div class="card"><div class="tools"><input id="q" placeholder="Search by name or note" aria-label="Search payments" value="${esc(S.q)}" oninput="S.q=this.value;hist(me())"><select aria-label="Filter by status" onchange="S.filter=this.value;hist(me())"><option value="all">All statuses</option><option value="success"${S.filter==='success'?' selected':''}>Completed</option><option value="failed"${S.filter==='failed'?' selected':''}>Failed</option></select></div><div id="hist"></div></div>`;
+ if(S.tab==='audit'){const A=db.audit.filter(a=>a.u===u.id);body=`<div class="card"><h3 style="font-size:16px;margin-bottom:4px">Audit log</h3><p style="color:var(--mu);margin:0 0 8px">Every sign-in, payment and rollback on your account.</p>${A.length?`<div class="wrap"><table><thead><tr><th>Event</th><th>Detail</th><th>Time</th></tr></thead><tbody>${A.slice(0,60).map(a=>`<tr><td class="mono">${esc(a.ev)}</td><td>${esc(a.meta||'')}</td><td>${fmt(a.ts)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Nothing logged yet.</div>'}</div>`}
+ return`<header class="top"><div class="logo"><i></i>PayFlow</div><div class="r"><span>${esc(u.name)}</span><button class="btn sec sm" onclick="logout()">Log out</button></div></header><nav class="tabs" aria-label="Sections">${tabs.map(([k,v])=>`<button class="${S.tab===k?'on':''}" onclick="S.tab='${k}';render()">${v}</button>`).join('')}</nav><main>${body}</main>`}
+function hist(u){const el=$('hist');if(!el)return;const q=S.q.toLowerCase();el.innerHTML=table(mine(u).filter(t=>(S.filter==='all'||t.status===S.filter)&&(!q||(label(t,u)+' '+(t.note||'')).toLowerCase().includes(q))),u)}
+function pay(e){e.preventDefault();const u=me(),to=$('to').value,am=$('am').value,nt=$('nt').value;
+ try{const r=transfer(u,to,am,nt,S.idem);S.last={to,amt:Math.floor(+am),note:nt,key:S.idem};toast(r.dup?'Duplicate blocked. No money moved.':'Sent '+inr(r.t.amt)+' to '+name(r.t.to)+'.')}catch(x){toast(x.message)}
+ render();return false}
+function replay(){const u=me(),l=S.last;try{const r=transfer(u,l.to,l.amt,l.note,l.key);toast(r.dup?'Duplicate blocked. No money moved.':'Sent again.')}catch(x){toast(x.message)}render()}
+function addFunds(){const v=prompt('How much would you like to add? (₹100 to ₹50,000)','1000');if(v===null)return;try{topup(me(),v);toast('Added '+inr(Math.floor(+v))+' to your wallet.')}catch(x){toast(x.message)}render()}
+function logout(){const u=me();if(u){audit(u.id,'auth.logout','Session ended');save()}setTok(null);S.tab='overview';render()}
+db=load();render();
+</script>
+</body>
+</html>

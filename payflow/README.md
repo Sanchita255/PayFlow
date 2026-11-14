@@ -204,5 +204,3 @@ PayFlow is an educational demonstration project. It is not affiliated with PayPa
 
 **Sanchita Dubey**
 
-- GitHub: https://github.com/YOUR_USERNAME
-- LinkedIn: YOUR_LINKEDIN_URL
